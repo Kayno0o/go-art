@@ -67,39 +67,7 @@ func multShapes(shapes [][]Vector, factor Vector) {
 	}
 }
 
-func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("No .json file provided")
-		return
-	}
-
-	schema := Schema{}
-	filename := ""
-
-	// Iterate over the command-line arguments
-	for _, arg := range os.Args[1:] {
-		// If the argument ends with ".json", read the file
-		if strings.HasSuffix(arg, ".json") {
-			filename = arg
-			// Read the file
-			jsonData, err := ioutil.ReadFile(arg)
-			if err != nil {
-				fmt.Println(err)
-				return
-			}
-
-			// Unmarshal the JSON data into the shapes variable
-			err = json.Unmarshal(jsonData, &schema)
-			if err != nil {
-				fmt.Println(err)
-				return
-			}
-
-			// Stop after the first .json file
-			break
-		}
-	}
-
+func drawSchema(schema Schema, filename string) {
 	rectangleSize := schema.RectangleSize
 	canvasSize := schema.CanvasSize
 	shapes := schema.Shapes
@@ -137,5 +105,50 @@ func main() {
 		moveShapes(shapes, *&Vector{X: -end.X - start.X, Y: rectangleSize.Y})
 	}
 
-	dc.SavePNG(filename + ".png")
+	if filename != "" {
+		dc.SavePNG(filename + ".png")
+	}
+}
+
+func drawRandomSchema() {
+
+}
+
+func main() {
+	if len(os.Args) < 2 {
+		fmt.Println("No .json file provided")
+		return
+	}
+
+	filename := ""
+
+	// Iterate over the command-line arguments
+	for _, arg := range os.Args[1:] {
+		// If the argument ends with ".json", read the file
+		if strings.HasSuffix(arg, ".json") {
+			filename = arg
+			// Read the file
+			jsonData, err := ioutil.ReadFile(arg)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+
+			schema := Schema{}
+
+			// Unmarshal the JSON data into the shapes variable
+			err = json.Unmarshal(jsonData, &schema)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+
+			drawSchema(schema, filename)
+			continue
+		}
+
+		if arg == "random" {
+			drawRandomSchema()
+		}
+	}
 }
