@@ -23,8 +23,7 @@ func (c *Canvas) Draw() {
 	}
 
 	c.multShapes(c.MultVector)
-	c.RectangleSize.X *= c.MultVector.X
-	c.RectangleSize.Y *= c.MultVector.Y
+	c.RectangleSize.Mult(c.MultVector)
 
 	c.Context.SetRGB(1, 1, 1)
 	c.Context.Clear()
