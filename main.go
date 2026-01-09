@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"math"
 	"math/rand"
 	"os"
 	"strings"
@@ -114,7 +113,7 @@ func main() {
 				drawRandomSchema()
 			}
 		}
-	case "pi":
-		fmt.Print(math.Pi)
+	default:
+		fmt.Println("Unknown command")
 	}
 }
